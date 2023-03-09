@@ -42,7 +42,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: TextField(
+                child: const TextField(
                   decoration: InputDecoration(
                     labelText: 'Enter a product name',
                     // hintText: 'Name',
@@ -102,9 +102,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
               height: 45,
               width: 360,
               child: ElevatedButton(
-                onPressed: () {
-                  // Do something when the button is pressed
-                },
+                onPressed: () {},
                 child: Text('Update Product'),
               ),
             )
