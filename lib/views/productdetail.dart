@@ -96,13 +96,15 @@ class _ProductDetailState extends State<ProductDetail> {
                           fontWeight: FontWeight.w600),
                     ),
                   ),
-                  Container(
-                    child: Text(
-                      widget.product.description,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  Flexible(
+                    child: Container(
+                      child: Text(
+                        widget.product.description,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(

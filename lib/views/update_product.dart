@@ -6,7 +6,8 @@ import '../models/Product_model.dart';
 import '../services/baseUrl.dart';
 
 class UpdateProduct extends StatefulWidget {
-  const UpdateProduct({super.key});
+  String id;
+  UpdateProduct({super.key, required this.id});
 
   @override
   State<UpdateProduct> createState() => _UpdateProductState();
@@ -15,9 +16,9 @@ class UpdateProduct extends StatefulWidget {
 class _UpdateProductState extends State<UpdateProduct> {
   List<Product> products = [];
 
-  Future<String> getProductData() async {
-    var response =
-        await http.get(Uri.parse(baseUrl + "vendorsproductslist.php"));
+  Future<String> getProductData(id) async {
+    var response = await http
+        .get(Uri.parse(baseUrl + "vendorsproductslist.php?vendor_id=$id"));
     setState(() {
       products = productFromJson(response.body);
     });
@@ -27,7 +28,7 @@ class _UpdateProductState extends State<UpdateProduct> {
   @override
   void initState() {
     super.initState();
-    getProductData();
+    getProductData(widget.id);
   }
 
   @override
@@ -42,7 +43,7 @@ class _UpdateProductState extends State<UpdateProduct> {
           title: Text("Update Product"),
         ),
         body: FutureBuilder(
-            future: getProductData(),
+            future: getProductData(widget.id),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
               return snapshot.hasData
@@ -68,10 +69,15 @@ class _UpdateProductState extends State<UpdateProduct> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UpdateDetails()),
+                                        builder: (context) => UpdateDetails(
+                                              product: products[index],
+                                            )),
                                   );
                                 },
-                                icon: Icon(Icons.edit)),
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.green,
+                                )),
                           ),
                         );
                       }))

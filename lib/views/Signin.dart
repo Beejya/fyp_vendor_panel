@@ -7,6 +7,7 @@ import 'package:vendor/views/VendorPanel.dart';
 import '../services/baseUrl.dart';
 import 'Forgetpassword.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class signin extends StatefulWidget {
   const signin({Key? key}) : super(key: key);
@@ -19,13 +20,20 @@ class _signinState extends State<signin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  String id = '1';
+  String name = "";
+  String email = "";
+
   login() async {
-    var url = baseUrl + "vendorlogin.php";
+    var url = "${baseUrl}vendorlogin.php";
     var res = await http.post(Uri.parse(url), body: {
       'email': emailController.text,
       'password': passwordController.text,
     });
     var data = json.decode(res.body);
+
+    print("--------------------------");
+
     final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
@@ -45,9 +53,26 @@ class _signinState extends State<signin> {
           fontSize: 16.0);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => vendorPanel()),
+        MaterialPageRoute(
+            builder: (context) => vendorPanel(
+                  id: id,
+                  name: name,
+                  email: email,
+                )),
       );
       print("sucess");
+
+      var newdata = (data['user']);
+      // print(data['user']);
+      // print(newdata['id']);
+      setState(() {
+        id = newdata['id'];
+        name = newdata["name"];
+        email = newdata["email"];
+      });
+      print(id);
+      print(name);
+      print(email);
     } else {
       Fluttertoast.showToast(
           msg:

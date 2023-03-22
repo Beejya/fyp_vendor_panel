@@ -1,13 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/Product_model.dart';
 import '../services/baseUrl.dart';
 
 class DeleteProduct extends StatefulWidget {
-  const DeleteProduct({super.key});
+  String id;
+  DeleteProduct({super.key, required this.id});
 
   @override
   State<DeleteProduct> createState() => _DeleteProductState();
@@ -16,9 +15,9 @@ class DeleteProduct extends StatefulWidget {
 class _DeleteProductState extends State<DeleteProduct> {
   List<Product> products = [];
 
-  Future<String> getProductData() async {
-    var response =
-        await http.get(Uri.parse(baseUrl + "vendorsproductslist.php"));
+  Future<String> getProductData(id) async {
+    var response = await http
+        .get(Uri.parse(baseUrl + "vendorsproductslist.php?vendor_id=$id"));
     setState(() {
       products = productFromJson(response.body);
     });
@@ -28,7 +27,7 @@ class _DeleteProductState extends State<DeleteProduct> {
   @override
   void initState() {
     super.initState();
-    getProductData();
+    getProductData(widget.id);
   }
 
   @override
@@ -41,7 +40,7 @@ class _DeleteProductState extends State<DeleteProduct> {
     return Scaffold(
         appBar: AppBar(title: Text("Delete Product")),
         body: FutureBuilder(
-            future: getProductData(),
+            future: getProductData(widget.id),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
               return snapshot.hasData
@@ -63,16 +62,40 @@ class _DeleteProductState extends State<DeleteProduct> {
                             subtitle: Text(
                                 "Category: ${products[index].category}\nDescription: ${products[index].description}"),
                             trailing: GestureDetector(
-                              child: Icon(Icons.delete),
-                              onTap: () {
-                                setState(() {
-                                  var url = Uri.parse(
-                                      baseUrl + "deleteVendorsProducts.php");
-                                  http.post(url,
-                                      body: {'id': products[index].id});
-                                });
-                              },
-                            ),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onTap: () {
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: Text("Are you sure?"),
+                                      content: Text(
+                                          "Do you want to Delete this product?"),
+                                      actions: [
+                                        TextButton(
+                                          child: Text("Yes"),
+                                          onPressed: () {
+                                            setState(() {
+                                              var url = Uri.parse(baseUrl +
+                                                  "deleteallproduct.php");
+                                              http.post(url, body: {
+                                                'id': products[index].id
+                                              });
+                                            });
+                                            Get.back();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text("No"),
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
                           ),
                         );
                       }))

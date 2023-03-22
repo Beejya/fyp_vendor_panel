@@ -5,7 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
+  String id;
+  AddProduct({super.key, required this.id});
 
   @override
   State<AddProduct> createState() => _AddProductState();
@@ -15,6 +16,7 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController quantity = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? uploadimage;
   String? category = "";
@@ -28,8 +30,7 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<void> uploadData() async {
-    var uploadurl =
-        Uri.parse("http://192.168.0.211/clothstore/vendorsproducts.php");
+    var uploadurl = Uri.parse("http://192.168.0.211/clothstore/images.php");
     try {
       List<int> imageBytes = uploadimage!.readAsBytesSync();
       String baseimage = base64Encode(imageBytes);
@@ -39,6 +40,8 @@ class _AddProductState extends State<AddProduct> {
         'description': description.text,
         'price': price.text,
         'category': category,
+        'quantity': quantity.text,
+        'vendor_id': widget.id,
       });
 
       if (response.statusCode == 200) {
@@ -53,6 +56,7 @@ class _AddProductState extends State<AddProduct> {
           name.clear();
           description.clear();
           price.clear();
+          quantity.clear();
           selectedCategory = 1;
           uploadimage = null;
         });
@@ -77,6 +81,7 @@ class _AddProductState extends State<AddProduct> {
     price.text;
     description.text;
     category;
+    quantity;
   }
 
   @override
@@ -84,6 +89,7 @@ class _AddProductState extends State<AddProduct> {
     name.clear();
     price.clear();
     description.clear();
+    quantity.clear();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -179,6 +185,7 @@ class _AddProductState extends State<AddProduct> {
                     },
                     controller: price,
                     autofocus: true,
+                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Enter the price of the product",
@@ -219,7 +226,6 @@ class _AddProductState extends State<AddProduct> {
                       ),
                     ],
                     onChanged: (value) {
-                      
                       if (value == "1") {
                         category = "Men";
                       } else if (value == "2") {
@@ -232,6 +238,26 @@ class _AddProductState extends State<AddProduct> {
                       print('this is tapped category---$category');
                     },
                   )),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    controller: quantity,
+                    autofocus: true,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Enter the quantity of the product",
+                      hintText: "Quantity",
+                      prefixIcon: Icon(Icons.production_quantity_limits),
+                    ),
+                  ),
                 ),
 
                 //

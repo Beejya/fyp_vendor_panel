@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:vendor/views/delete_product.dart';
 import 'package:vendor/views/update_product.dart';
 import 'package:vendor/views/view_product.dart';
@@ -9,7 +7,10 @@ import 'Signup.dart';
 import 'addproduct.dart';
 
 class vendorPanel extends StatefulWidget {
-  const vendorPanel({super.key});
+  String? id;
+  String name;
+  String email;
+  vendorPanel({super.key, this.id, required this.name, required this.email});
 
   @override
   State<vendorPanel> createState() => _vendorPanelState();
@@ -53,8 +54,8 @@ class _vendorPanelState extends State<vendorPanel> {
                       SizedBox(
                         height: 15,
                       ),
-                      Text("Bijay Kc"),
-                      Text("bijaykc@gmail.com")
+                      Text(widget.name),
+                      Text(widget.email)
                     ],
                   )
                 ],
@@ -92,7 +93,10 @@ class _vendorPanelState extends State<vendorPanel> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddProduct()),
+                      MaterialPageRoute(
+                          builder: (context) => AddProduct(
+                                id: widget.id.toString(),
+                              )),
                     );
                   },
                   child: Container(
@@ -131,7 +135,10 @@ class _vendorPanelState extends State<vendorPanel> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ViewProduct()),
+                      MaterialPageRoute(
+                          builder: (context) => ViewProduct(
+                                id: widget.id.toString(),
+                              )),
                     );
                   },
                   child: Container(
@@ -170,7 +177,10 @@ class _vendorPanelState extends State<vendorPanel> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DeleteProduct()),
+                      MaterialPageRoute(
+                          builder: (context) => DeleteProduct(
+                                id: widget.id.toString(),
+                              )),
                     );
                   },
                   child: Container(
@@ -209,7 +219,10 @@ class _vendorPanelState extends State<vendorPanel> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => UpdateProduct()),
+                      MaterialPageRoute(
+                          builder: (context) => UpdateProduct(
+                                id: widget.id.toString(),
+                              )),
                     );
                   },
                   child: Container(
@@ -300,7 +313,8 @@ class _vendorPanelState extends State<vendorPanel> {
                             color: Colors.blueAccent,
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
-                      )
+                      ),
+                      // Text(widget.id.toString())
                     ],
                   ),
                 )),

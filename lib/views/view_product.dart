@@ -5,7 +5,8 @@ import '../models/Product_model.dart';
 import '../services/baseUrl.dart';
 
 class ViewProduct extends StatefulWidget {
-  const ViewProduct({super.key});
+  String id;
+  ViewProduct({super.key, required this.id});
 
   @override
   State<ViewProduct> createState() => _ViewProductState();
@@ -14,9 +15,9 @@ class ViewProduct extends StatefulWidget {
 class _ViewProductState extends State<ViewProduct> {
   List<Product> products = [];
 
-  Future<String> getProductData() async {
-    var response =
-        await http.get(Uri.parse(baseUrl + "vendorsproductslist.php"));
+  Future<String> getProductData(id) async {
+    var response = await http
+        .get(Uri.parse(baseUrl + "vendorsproductslist.php?vendor_id=$id"));
     setState(() {
       products = productFromJson(response.body);
     });
@@ -26,7 +27,7 @@ class _ViewProductState extends State<ViewProduct> {
   @override
   void initState() {
     super.initState();
-    getProductData();
+    getProductData(widget.id);
   }
 
   @override
@@ -41,7 +42,7 @@ class _ViewProductState extends State<ViewProduct> {
           title: Text("All Products"),
         ),
         body: FutureBuilder(
-            future: getProductData(),
+            future: getProductData(widget.id),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
               return snapshot.hasData
