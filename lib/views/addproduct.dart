@@ -30,7 +30,7 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<void> uploadData() async {
-    var uploadurl = Uri.parse("http://192.168.0.211/clothstore/images.php");
+    var uploadurl = Uri.parse("http://172.16.18.43/clothstore/images.php");
     try {
       List<int> imageBytes = uploadimage!.readAsBytesSync();
       String baseimage = base64Encode(imageBytes);

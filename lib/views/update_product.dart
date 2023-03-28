@@ -18,7 +18,7 @@ class _UpdateProductState extends State<UpdateProduct> {
 
   Future<String> getProductData(id) async {
     var response = await http
-        .get(Uri.parse(baseUrl + "vendorsproductslist.php?vendor_id=$id"));
+        .get(Uri.parse("${baseUrl}vendorsproductslist.php?vendor_id=$id"));
     setState(() {
       products = productFromJson(response.body);
     });

@@ -5,6 +5,7 @@ import 'package:vendor/views/view_product.dart';
 
 import 'Signup.dart';
 import 'addproduct.dart';
+import 'order_detail.dart';
 
 class vendorPanel extends StatefulWidget {
   String? id;
@@ -255,67 +256,78 @@ class _vendorPanelState extends State<vendorPanel> {
                     ),
                   ),
                 )),
+            // Padding(
+            //     padding: const EdgeInsets.all(20.0),
+            //     child: Container(
+            //       width: 350,
+            //       height: 90,
+            //       padding: const EdgeInsets.all(16.0),
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         border: Border.all(width: 2, color: Colors.blueAccent),
+            //         borderRadius: BorderRadius.all(Radius.circular(20)),
+            //       ),
+            //       child: Row(
+            //         children: [
+            //           Icon(
+            //             Icons.payment_rounded,
+            //             size: 60,
+            //             color: Colors.blueAccent,
+            //           ),
+            //           SizedBox(
+            //             width: 10,
+            //           ),
+            //           Text(
+            //             "Payment Details",
+            //             style: TextStyle(
+            //                 color: Colors.blueAccent,
+            //                 fontSize: 25,
+            //                 fontWeight: FontWeight.bold),
+            //           )
+            //         ],
+            //       ),
+            //     )),
             Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  width: 350,
-                  height: 90,
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 2, color: Colors.blueAccent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.payment_rounded,
-                        size: 60,
-                        color: Colors.blueAccent,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Payment Details",
-                        style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                )),
-            Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  width: 350,
-                  height: 90,
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 2, color: Colors.blueAccent),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.category,
-                        size: 60,
-                        color: Colors.blueAccent,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Order Details",
-                        style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      // Text(widget.id.toString())
-                    ],
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderDetail(
+                                id: widget.id.toString(),
+                              )),
+                    );
+                  },
+                  child: Container(
+                    width: 350,
+                    height: 90,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(width: 2, color: Colors.blueAccent),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.category,
+                          size: 60,
+                          color: Colors.blueAccent,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Order Details",
+                          style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        // Text(widget.id.toString())
+                      ],
+                    ),
                   ),
                 )),
           ],
