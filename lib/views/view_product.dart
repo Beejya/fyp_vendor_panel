@@ -61,18 +61,20 @@ class _ViewProductState extends State<ViewProduct> {
                                         )),
                               );
                             },
-                            child: ListTile(
-                              tileColor: Colors.blue.shade50,
-                              leading: Container(
-                                child: Image.network(
-                                  baseUrl + "${products[index].image}",
-                                  height: 200,
+                            child: Expanded(
+                              child: ListTile(
+                                tileColor: Colors.blue.shade50,
+                                leading: Container(
+                                  child: Image.network(
+                                    baseUrl + "${products[index].image}",
+                                    height: 200,
+                                  ),
                                 ),
+                                title: Text(
+                                    "Name: ${products[index].name} \nPrice: ${products[index].price}"),
+                                subtitle: Text(
+                                    "Category: ${products[index].category}\nDescription: ${products[index].description}"),
                               ),
-                              title: Text(
-                                  "Name: ${products[index].name} \nPrice: ${products[index].price}"),
-                              subtitle: Text(
-                                  "Category: ${products[index].category}\nDescription: ${products[index].description}"),
                             ),
                           ),
                         );

@@ -3,28 +3,26 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../models/Product_model.dart';
-import '../models/order_model.dart';
+
+import '../models/confirm_order.dart';
 import '../services/baseUrl.dart';
 
-class OrderDetail extends StatefulWidget {
-  String id;
-  OrderDetail({super.key, required this.id});
+class OrderConfirm extends StatefulWidget {
+  String? id;
+  OrderConfirm({super.key, this.id});
 
   @override
-  State<OrderDetail> createState() => _OrderDetailState();
+  State<OrderConfirm> createState() => _OrderConfirmState();
 }
 
-class _OrderDetailState extends State<OrderDetail> {
-  bool isConfirmed = false;
-  List<Order> order_detail = [];
+class _OrderConfirmState extends State<OrderConfirm> {
+  List<ConfirmOrder> confirmOrder = [];
 
-  Future<String> getorderData(id) async {
-    var response =
-        await http.get(Uri.parse(baseUrl + "orderslist.php?vendor_id=$id"));
+  Future<String> getConfirmOrderData(id) async {
+    var response = await http
+        .get(Uri.parse(baseUrl + "confirm_order_list.php?vendorId=$id"));
     setState(() {
-      order_detail = orderFromJson(response.body);
+      confirmOrder = confirmOrderFromJson(response.body);
     });
     return "Sucess";
   }
@@ -32,7 +30,7 @@ class _OrderDetailState extends State<OrderDetail> {
   @override
   void initState() {
     super.initState();
-    getorderData(widget.id);
+    getConfirmOrderData(widget.id);
   }
 
   @override
@@ -44,15 +42,15 @@ class _OrderDetailState extends State<OrderDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Order Detail"),
+          title: Text("Confirm Order"),
         ),
         body: FutureBuilder(
-            future: getorderData(widget.id),
+            future: getConfirmOrderData(widget.id),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
               return snapshot.hasData
                   ? ListView.builder(
-                      itemCount: order_detail.length,
+                      itemCount: confirmOrder.length,
                       itemBuilder: ((context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(10),
@@ -77,7 +75,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              "${order_detail[index].orderId}",
+                                              "${confirmOrder[index].orderId}",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -90,9 +88,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                               width: 15,
                                             ),
                                             Text(
-                                              "Pending",
+                                              "Delivered",
                                               style: TextStyle(
-                                                  color: Colors.red,
+                                                  color: Colors.green,
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
                                             )
@@ -110,7 +108,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                         FontWeight.bold),
                                               ),
                                               Text(
-                                                  "${order_detail[index].userid}",
+                                                  "${confirmOrder[index].userId}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold))
@@ -129,7 +127,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                         FontWeight.bold),
                                               ),
                                               Text(
-                                                  "${order_detail[index].totalPrice}",
+                                                  "${confirmOrder[index].totalPrice}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold))
@@ -146,95 +144,13 @@ class _OrderDetailState extends State<OrderDetail> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               Text(
-                                                  "${order_detail[index].quantityOrder}",
+                                                  "${confirmOrder[index].quantityOrder}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               SizedBox(
                                                 width: 25,
                                               ),
-                                              Icon(
-                                                  Icons.shopping_cart_checkout),
-                                              Text("Confirm Delivery:"),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              ElevatedButton(
-                                                child: Text("Confirm"),
-                                                onPressed: () {
-                                                  Get.dialog(AlertDialog(
-                                                    title:
-                                                        Text("Order Delivery"),
-                                                    content: Text(
-                                                        "Do you want to confirm or cancel the order?"),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          var url = Uri.parse(
-                                                              '${baseUrl}confirm_order.php');
-                                                          var response = http
-                                                              .post(url, body: {
-                                                            'order_id':
-                                                                order_detail[
-                                                                        index]
-                                                                    .orderId,
-                                                            'total_price':
-                                                                order_detail[
-                                                                        index]
-                                                                    .totalPrice,
-                                                            'user_id':
-                                                                order_detail[
-                                                                        index]
-                                                                    .userid,
-                                                            'quantity_order':
-                                                                order_detail[
-                                                                        index]
-                                                                    .quantityOrder,
-                                                            'product_id':
-                                                                order_detail[
-                                                                        index]
-                                                                    .productId,
-                                                            'delivery_city':
-                                                                order_detail[
-                                                                        index]
-                                                                    .deliveryCity,
-                                                            'delivery_address':
-                                                                order_detail[
-                                                                        index]
-                                                                    .deliveryAddress,
-                                                            'contact_number':
-                                                                order_detail[
-                                                                        index]
-                                                                    .contactNumber,
-                                                            'payment_status':
-                                                                order_detail[
-                                                                        index]
-                                                                    .paymentStatus,
-                                                            'vendor_id':
-                                                                order_detail[
-                                                                        index]
-                                                                    .vendorId,
-                                                          });
-                                                          setState(() {
-                                                            isConfirmed = true;
-                                                          });
-                                                          Get.back();
-                                                        },
-                                                        child: Text("Confirm"),
-                                                      ),
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              isConfirmed =
-                                                                  false;
-                                                            });
-                                                            Get.back();
-                                                          },
-                                                          child: Text("Cancel"))
-                                                    ],
-                                                  ));
-                                                },
-                                              )
                                             ],
                                           ),
                                         ),
@@ -246,7 +162,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               Text(
-                                                  "${order_detail[index].productId}",
+                                                  "${confirmOrder[index].productId}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold)),
@@ -264,7 +180,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 Text(
-                                                    "${order_detail[index].deliveryCity}",
+                                                    "${confirmOrder[index].deliveryCity}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold))
@@ -283,7 +199,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 Text(
-                                                    "${order_detail[index].deliveryAddress}",
+                                                    "${confirmOrder[index].deliveryAddress}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold))
@@ -302,7 +218,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 Text(
-                                                    "${order_detail[index].contactNumber}",
+                                                    "${confirmOrder[index].contactNumber}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold))
@@ -321,7 +237,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 Text(
-                                                    "${order_detail[index].paymentStatus}",
+                                                    "${confirmOrder[index].paymentStatus}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold))

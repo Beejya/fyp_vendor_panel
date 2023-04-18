@@ -161,7 +161,7 @@ class _signupState extends State<signup> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.email),
+                        suffixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         hintText: 'Enter your Username',
@@ -182,7 +182,7 @@ class _signupState extends State<signup> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.email),
+                        suffixIcon: Icon(Icons.location_on),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         hintText: 'Enter your address',
@@ -203,7 +203,7 @@ class _signupState extends State<signup> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.email),
+                        suffixIcon: Icon(Icons.phone),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         hintText: 'Enter your Contact Number',

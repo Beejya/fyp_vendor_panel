@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
+import '../services/baseUrl.dart';
+
 class AddProduct extends StatefulWidget {
   String id;
   AddProduct({super.key, required this.id});
@@ -30,7 +32,7 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<void> uploadData() async {
-    var uploadurl = Uri.parse("http://172.16.18.43/clothstore/images.php");
+    var uploadurl = Uri.parse("${baseUrl}images.php");
     try {
       List<int> imageBytes = uploadimage!.readAsBytesSync();
       String baseimage = base64Encode(imageBytes);
